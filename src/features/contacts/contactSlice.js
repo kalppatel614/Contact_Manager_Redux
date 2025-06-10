@@ -17,7 +17,7 @@ const initialState = {
 // Async Thunks for Appwrite Database operations
 export const addContact = createAsyncThunk(
   "contacts/addContact",
-  async (contactData, userId) => {
+  async ({ contactData, userId }) => {
     try {
       if (!userId) {
         throw new Error("User ID is required to add a contact.");
@@ -46,6 +46,7 @@ export const addContact = createAsyncThunk(
       );
       return newContact;
     } catch (error) {
+      console.error("Full error:", error);
       throw error;
     }
   }

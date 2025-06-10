@@ -49,17 +49,14 @@ function AddEditContact() {
 
   const uploadImage = async () => {
     if (!imageFile) {
-      console.log(
-        "No new image file selected, returning existing URL:",
-        imageUrl
-      );
-      return imageUrl;
+      console.log("No new image file selected, returning existing URL:");
+      return "";
     }
     const APPWRITE_BUCKET_ID = import.meta.env.VITE_APPWRITE_BUCKET_ID;
     if (!APPWRITE_BUCKET_ID) {
       console.error("VITE_APPWRITE_BUCKET_ID is not defined.");
       toast.error("Image upload failed: Appwrite Bucket ID is missing.");
-      return null;
+      return "";
     }
     try {
       const file = await storage.createFile(
@@ -72,7 +69,7 @@ function AddEditContact() {
     } catch (error) {
       console.error("Error uploading image:", error);
       toast.error("Image upload failed");
-      return null;
+      return "";
     }
   };
 
@@ -86,18 +83,18 @@ function AddEditContact() {
     let uploadedImageUrl = imageUrl;
     if (imageFile) {
       uploadedImageUrl = await uploadImage();
-      if (uploadedImageUrl === null) {
+      if (!uploadedImageUrl) {
         // If image upload failed, stop the process
         console.log("Image upload failed, stopping form submission.");
-        return;
+        uploadedImageUrl = "";
       }
     }
     const contactData = {
       name,
       address,
-      phone,
+      contactNumber: phone,
       gender,
-      imageUrl: uploadedImageUrl,
+      imageUrl: uploadedImageUrl || "",
     };
     let resultAction;
     if (id) {
@@ -114,11 +111,12 @@ function AddEditContact() {
           }`
         );
       }
-    } else resultAction = await dispatch(addContact(contactData, userId));
+    } else resultAction = await dispatch(addContact({ contactData, userId }));
     if (addContact.fulfilled.match(resultAction)) {
       toast.success("Contact added successfully!");
       navigate("/contacts");
     } else {
+      console.error("Detailed error:", resultAction.error);
       toast.error(
         `Failed to add contact: ${
           resultAction.error?.message || "Unknown error"

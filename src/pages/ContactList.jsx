@@ -61,10 +61,10 @@ function ContactList() {
           No contacts found
         </p>
       ) : (
-        <div className="overflow-x-auto">
-          <table className="min-w-full divide-y divide-gray-200 table-auto w-full text-sm text-left text-gray-500">
+        <div className="overflow-x-auto bg-gray-800 rounded-2xl">
+          <table className="min-w-full divide-y divide-gray-500 table-auto w-full text-sm text-left text-gray-300">
             <thead>
-              <tr className="bg-gray-100 text-gray-600 uppercase text-sm leading-normal">
+              <tr className="bg-gray-800 text-gray-300 uppercase text-sm leading-normal">
                 <th className="py-3 px-6 text-left">Name</th>
                 <th className="py-3 px-6 text-left">Address</th>
                 <th className="py-3 px-6 text-left">Contact Number</th>
