@@ -74,7 +74,7 @@ const authSlice = createSlice({
   },
   reducers: {
     logoutUser: (state) => {
-      account.deleteSession("current"); // optional: logout logic
+      account.deleteSession("current");
       state.userData = null;
       state.status = false;
     },
@@ -149,5 +149,5 @@ const authSlice = createSlice({
       });
   },
 });
-// export const { logoutUser } = authSlice.actions;
+
 export default authSlice.reducer;
